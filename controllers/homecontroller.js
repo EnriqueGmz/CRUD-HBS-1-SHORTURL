@@ -25,7 +25,21 @@ const agregarUrl = async (req, res) => {
     }
 };
 
+const eliminarUrl = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+
+        await Url.findByIdAndDelete(id).lean();
+        res.redirect("/");
+    } catch (error) {
+        console.log(error);
+        res.send("error algo falló")
+    }
+};
+
 module.exports = {
     leerUrls,
-    agregarUrl
+    agregarUrl,
+    eliminarUrl
 }
