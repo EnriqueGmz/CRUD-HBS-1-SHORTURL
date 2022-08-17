@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { nanoid } = required("nanoid");
 const { Schema } = mongoose;
 
 const urlSchema = new Schema({
@@ -12,7 +11,6 @@ const urlSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        default: nanoid(7)
     }
 });
 
