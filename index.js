@@ -1,5 +1,7 @@
 const express = require("express");
 const { create } = require("express-handlebars");
+require("dotenv").config();
+require("./database/db");
 
 const app = express();
 
@@ -12,21 +14,10 @@ app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 app.set("views", "./views");
 
-app.get("/", (req, res) => {
-    const urls = [
-        { origin: "www.google.com/EnriqueGmz1", shortURL: "fdaasdasd1" },
-        { origin: "www.google.com/EnriqueGmz2", shortURL: "fdaasdasd2" },
-        { origin: "www.google.com/EnriqueGmz3", shortURL: "fdaasdasd3" },
-        { origin: "www.google.com/EnriqueGmz4", shortURL: "fdaasdasd4" },
-    ];
-    res.render("home", { urls: urls });
-});
-
-app.get("/login", (req, res) => {
-    res.render("login");
-});
-
 // Middlewares
-app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/public"));
+app.use("/", require("./routes/home"));
+app.use("/auth", require("./routes/auth"));
 
-app.listen(5000, () => console.log("Servidor andando 🚀"));
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => console.log("Servidor andando 🚀 " + PORT));
