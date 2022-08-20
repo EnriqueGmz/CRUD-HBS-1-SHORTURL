@@ -62,6 +62,7 @@ const editarUrl = async (req, res) => {
         await Url.findByIdAndUpdate(id, { origin: origin });
         res.redirect("/")
 
+
     } catch (error) {
         console.log(error);
         res.send("error algo falló")
@@ -73,7 +74,7 @@ const redireccionamiento = async (req, res) => {
     const { shortURL } = req.params;
     try {
         const urlDB = await Url.findOne({ shortURL: shortURL });
-        res.redirect(urlDB.origin);
+        // res.redirect(urlDB.origin);
 
     } catch (error) {
         console.log(error);
