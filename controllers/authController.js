@@ -15,12 +15,34 @@ const registerUser = async (req, res) => {
 
         user = new User({ userName, email, password, tokenConfirm: uuidv4(3) })
         await user.save();
-        res.json(user);
 
+        // enviar correo electrónico con la confirmación de la cuenta
+
+        res.redirect("/auth/login");
+        // res.render("/auth/login");
     } catch (error) {
         res.json({ error: error.message });
     }
-    res.json(req.body);
+};
+
+const confirmarCuenta = async (req, res) => {
+    const { token } = req.params;
+
+    try {
+        const user = await User.findOne({ tokenConfirm: token });
+
+        if (!user) throw new Error("No existe este usuario");
+
+        user.cuentaConfirmada = true;
+        user.tokenConfirm = null;
+
+        await user.save();
+
+        res.redirect("/auth/login");
+        // res.render("login");
+    } catch (error) {
+        res.json({ error: error.message });
+    }
 };
 
 const loginForm = (req, res) => {
@@ -28,9 +50,32 @@ const loginForm = (req, res) => {
 
 };
 
+const loginUser = async (req, res) => {
+
+    const { email, password } = req.body
+
+    try {
+
+        const user = await User.findOne({ email });
+        if (!user) throw new Error("No existe este email");
+
+        if (!user.cuentaConfirmada) throw new Error("Falta confirmar la cuenta");
+
+        if (!await user.comparePassword(password)) throw new Error("Contraseña no correcta");
+
+        res.redirect("/")
+
+    } catch (error) {
+        res.send(error.message)
+    }
+
+}
+
 module.exports = {
     loginForm,
     registerForm,
-    registerUser
+    registerUser,
+    confirmarCuenta,
+    loginUser
 };
 

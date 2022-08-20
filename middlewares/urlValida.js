@@ -5,7 +5,12 @@ const urlValidar = (req, res, next) => {
         const { origin } = req.body;
         const urlFrontend = new URL(origin);
         if (urlFrontend.origin !== "null") {
-            return next();
+            if (
+                urlFrontend.protocol === "http:" ||
+                urlFrontend.protocol === "https:"
+            ) {
+                return next();
+            }
         } else {
             throw new Error("no válida 😶");
         }

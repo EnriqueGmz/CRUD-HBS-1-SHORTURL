@@ -39,12 +39,15 @@ userSchema.pre("save", async function (next) {
         user.password = hash;
         next();
     } catch (error) {
-        // validar si es qe falla la encryptación de contraseña
-
+        // validar si es qe falla la encryptación de contraseña;
+        // user = null;
         next();
     }
+});
 
-})
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+}
 
 module.exports = mongoose.model("User", userSchema);
 
