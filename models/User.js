@@ -39,9 +39,8 @@ userSchema.pre("save", async function (next) {
         user.password = hash;
         next();
     } catch (error) {
-        // validar si es qe falla la encryptación de contraseña;
-        // user = null;
-        next();
+        console.log(error);
+        throw new Error("Error al codificar la contrasena");
     }
 });
 

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 
 const registerForm = (req, res) => {
@@ -6,6 +7,12 @@ const registerForm = (req, res) => {
 };
 
 const registerUser = async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json(errors)
+    }
+
     console.log(req.body);
     const { userName, email, password } = req.body;
     try {
@@ -52,8 +59,12 @@ const loginForm = (req, res) => {
 
 const loginUser = async (req, res) => {
 
-    const { email, password } = req.body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json(errors)
+    }
 
+    const { email, password } = req.body
     try {
 
         const user = await User.findOne({ email });
