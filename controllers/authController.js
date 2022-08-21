@@ -3,7 +3,12 @@ const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 
 const registerForm = (req, res) => {
-    res.render("register", { mensajes: req.flash("mensajes") });
+    res.render("register");
+};
+
+const loginForm = (req, res) => {
+    res.render("login");
+
 };
 
 const registerUser = async (req, res) => {
@@ -60,11 +65,6 @@ const confirmarCuenta = async (req, res) => {
     }
 };
 
-const loginForm = (req, res) => {
-    res.render("login", { mensajes: req.flash("mensajes") });
-
-};
-
 const loginUser = async (req, res) => {
 
     const errors = validationResult(req);
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
 
         if (!user.cuentaConfirmada) throw new Error("Falta confirmar la cuenta");
 
-        if (!await user.comparePassword(password)) throw new Error("Contraseña no correcta");
+        if (!await user.comparePassword(password)) throw new Error("Contraseña no es correcta");
 
         // me esta creando la sesión a través de passport
         req.login(user, function (err) {

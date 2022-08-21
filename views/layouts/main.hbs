@@ -12,11 +12,10 @@
     <div class="container mt-3">
 
         {{#each mensajes }}
-            <div class="alert alert-dark mb-2">{{this.msg}}</div> 
+            <div class="row justify-content-center">
+                <div class="col-md-6 alert alert-dark mb-2">{{this.msg}}</div> 
+            </div>
         {{/each}}
-
-        
-        
 
         {{{body}}}
     </div>
