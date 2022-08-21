@@ -2,7 +2,7 @@ const Url = require("../models/Url");
 const { v4: uuidv4 } = require("uuid");
 
 const leerUrls = async (req, res) => {
-
+    console.log(req.user);
     try {
         const urls = await Url.find().lean();
         res.render("home", { urls: urls });
